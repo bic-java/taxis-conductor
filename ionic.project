@@ -1,0 +1,11 @@
+{
+  "name": "com.biconsulting.taxisConductor",
+  "app_id": "c1dc1cd0",
+  "browsers": [
+    {
+      "platform": "android",
+      "browser": "crosswalk",
+      "version": "12.41.296.5"
+    }
+  ]
+}
