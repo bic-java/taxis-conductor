@@ -1,6 +1,6 @@
-angular.module('starter.controllers', [])
+angular.module('taxis.controllers', ['taxis.controllers.accounts'])
 
-        .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $ionicSideMenuDelegate) {
+        .controller('AppCtrl', function ($scope, $ionicSideMenuDelegate) {
 
             // With the new view caching in Ionic, Controllers are only called
             // when they are recreated or on app start, instead of every page change.
@@ -20,32 +20,6 @@ angular.module('starter.controllers', [])
                         }
 
                     });
-
-            // Form data for the login modal
-            $scope.loginData = {};
-            // Create the login modal that we will use later
-            $ionicModal.fromTemplateUrl('templates/login.html', {
-                scope: $scope
-            }).then(function (modal) {
-                $scope.modal = modal;
-            });
-            // Triggered in the login modal to close it
-            $scope.closeLogin = function () {
-                $scope.modal.hide();
-            };
-            // Open the login modal
-            $scope.login = function () {
-                $scope.modal.show();
-            };
-            // Perform the login action when the user submits the login form
-            $scope.doLogin = function () {
-                console.log('Doing login', $scope.loginData);
-                // Simulate a login delay. Remove this and replace with your login
-                // code if using a login system
-                $timeout(function () {
-                    $scope.closeLogin();
-                }, 1000);
-            };
         })
 
         .controller('PlaylistsCtrl', function ($scope) {
@@ -61,9 +35,54 @@ angular.module('starter.controllers', [])
 
         .controller('PlaylistCtrl', function ($scope, $stateParams) {
         })
-        .controller('BrowseCtrl', function ($scope, $stateParams) {
+        .controller('BrowseCtrl', function ($scope, $stateParams, $interval, CurrentUser, WS) {
+            $scope.address = '';
+            var gMap = null, driverMarker = null, zoomed = false;
+
             function onMapInit(map) {
                 console.info('Map Init');
+                gMap = map;
+                gMap.on(plugin.google.maps.event.CAMERA_CHANGE, onMapCameraChanged);
+                gMap.addMarker({
+                    position: {lat: 19, lng: -98}
+                    , icon: {
+                        url: 'file:///android_asset/www/img/car.png'
+                    }
+                }, function (marker) {
+                    driverMarker = marker;
+                });
+                CurrentUser.updateLocationInterval = $interval($scope.updateDriverLocation, 10000);
+                $scope.updateDriverLocation();
+            }
+
+            function onMapCameraChanged(position) {
+                console.log('mapChanged', position);
+                updateAddress(position.target);
+            }
+
+            function updateAddress(position) {
+                var request = {
+                    'position': position
+                };
+                plugin.google.maps.Geocoder.geocode(request, function (results) {
+                    console.log('GeocoderResult', results);
+                    if (results.length) {
+                        var result = results[0];
+                        var position = result.position;
+                        var address = [
+                            result.subThoroughfare || "",
+                            result.thoroughfare || "",
+                            result.locality || "",
+                            result.adminArea || "",
+                            result.postalCode || "",
+                            result.country || ""].join(", ");
+                        $scope.$apply(function ($scope) {
+                            $scope.address = address;
+                        });
+                    } else {
+                        console.log("Not found");
+                    }
+                });
             }
 
 //            $scope.$evalAsync(function () {
@@ -73,6 +92,25 @@ angular.module('starter.controllers', [])
                 var map = plugin.google.maps.Map.getMap(mapDiv);
                 // You have to wait the MAP_READY event.
                 map.on(plugin.google.maps.event.MAP_READY, onMapInit);
+            };
+
+            $scope.updateDriverLocation = function () {
+                var onSuccess = function (location) {
+                    driverMarker.setPosition(location.latLng);
+                    if (!zoomed) {
+                        gMap.animateCamera({
+                            target: location.latLng
+                            , zoom: 15});
+                        zoomed = true;
+                    }
+
+                    WS.call('Driver', 'updateLocation', {lat: location.latLng.lat, lng: location.latLng.lng});
+                };
+
+                var onError = function (msg) {
+                    alert("error: " + msg);
+                };
+                gMap.getMyLocation(onSuccess, onError);
             };
         })
         ;

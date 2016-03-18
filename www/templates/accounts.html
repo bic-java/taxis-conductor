@@ -1,0 +1,44 @@
+<ion-view view-title="Cuentas">
+    <ion-content>
+        <ion-list ng-if="!currentUser.isLoggedIn">
+            <ion-item class="item-positive" ng-click="showLogin(false)">
+                Añadir cuenta
+            </ion-item>
+            <ion-item class="item-icon-right item-avatar" ng-repeat="(accountKey,account) in accounts" ng-click="showLogin(account)">
+                <img src="http://192.168.0.14/~eislas/taxis/img/driver.png">
+                {{account.email}}, {{account.circulation_plate}}
+                <ion-option-button class="button-assertive" ng-click="removeAccount(accountKey)">
+                    Delete
+                </ion-option-button>
+                <i class="icon ion-arrow-left-c stable"></i>
+            </ion-item>
+        </ion-list>
+        <div ng-if="currentUser.isLoggedIn" class="list card">
+
+            <div class="item item-avatar item-icon-right">
+                <img src="http://192.168.0.14/~eislas/taxis/img/driver.png">
+                <h2>{{currentUser.email}}</h2>
+                <p>{{currentUser.car.type_car_name}} {{currentUser.car.color}}
+                    , Placas {{currentUser.car.circulation_plate}}
+                    , {{currentUser.car.doors}} puertas</p>
+
+            </div>
+            <div class="item item-body">
+                <img class="full-image" src="http://192.168.0.14/~eislas/taxis/img/taxi1.jpg">
+                <p>
+                    This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
+                    the content is from a card-body consisting of an image and paragraph text. The footer
+                    consists of tabs, icons aligned left, within the card-footer.
+                </p>
+                <p>
+                    <a href="#" class="subdued">1 Like</a>
+                    <a href="#" class="subdued">5 Comments</a>
+                </p>
+            </div>
+            <button class="button button-full icon-right ion-android-exit button-assertive" ng-click="logout()">
+                Salir
+            </button>
+
+        </div>
+    </ion-content>
+</ion-view>

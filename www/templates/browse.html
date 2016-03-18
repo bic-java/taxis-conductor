@@ -1,10 +1,27 @@
 <ion-view view-title="Browse">
     <ion-content>
         <div id="mapa" style="height: 100%;" ng-init="initMap()">
-            <div id="searchBox">
-                <input type="text" id="query" size="30" />
-                <button id="searchBtn">Search</button>
+
+            <div class="list">
+                <div class="item item-input-inset">
+                    <label class="item-input-wrapper">
+                        <input type="text" placeholder="Direccion" ng-model="address">
+                    </label>
+                    <button class="button button-small">
+                        Submit
+                    </button>
+                </div>
             </div>
         </div>
     </ion-content>
+    <style>
+        #mapa{
+            background-image: url(img/target.png);
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        #mapa>*{
+            opacity: 0.8;
+        }
+    </style>
 </ion-view>

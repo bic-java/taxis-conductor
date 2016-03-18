@@ -1,0 +1,18 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <i class="button-icon icon {{modalIconClasses}}"></i>
+        <h1 class="title">{{title}}</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeModal()">Cancelar</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <div class="list card">
+            <div class="item item-body">
+                <p>
+                    {{message}}
+                </p>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>
