@@ -1,7 +1,7 @@
 angular.module('taxis.services', [])
         .service('WS', function ($http, $ionicLoading, modal) {
 
-            this.serverUrl = 'http://192.168.0.14/~eislas/taxis/service.php';
+            this.serverUrl = 'http://taxis.biconsultingsc.com/service.php';
 
             /**
              * @function call

@@ -47,6 +47,10 @@ angular.module('taxis.controllers', ['taxis.controllers.accounts'])
                     position: {lat: 19, lng: -98}
                     , icon: {
                         url: 'file:///android_asset/www/img/car.png'
+                        , size: {
+                            width: 30,
+                            height: 30
+                        }
                     }
                 }, function (marker) {
                     driverMarker = marker;

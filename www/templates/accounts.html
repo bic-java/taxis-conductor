@@ -5,7 +5,7 @@
                 Añadir cuenta
             </ion-item>
             <ion-item class="item-icon-right item-avatar" ng-repeat="(accountKey,account) in accounts" ng-click="showLogin(account)">
-                <img src="http://192.168.0.14/~eislas/taxis/img/driver.png">
+                <img src="http://taxis.biconsultingsc.com/img/driver.png">
                 {{account.email}}, {{account.circulation_plate}}
                 <ion-option-button class="button-assertive" ng-click="removeAccount(accountKey)">
                     Delete
@@ -16,7 +16,7 @@
         <div ng-if="currentUser.isLoggedIn" class="list card">
 
             <div class="item item-avatar item-icon-right">
-                <img src="http://192.168.0.14/~eislas/taxis/img/driver.png">
+                <img src="http://taxis.biconsultingsc.com/img/driver.png">
                 <h2>{{currentUser.email}}</h2>
                 <p>{{currentUser.car.type_car_name}} {{currentUser.car.color}}
                     , Placas {{currentUser.car.circulation_plate}}
@@ -24,7 +24,7 @@
 
             </div>
             <div class="item item-body">
-                <img class="full-image" src="http://192.168.0.14/~eislas/taxis/img/taxi1.jpg">
+                <img class="full-image" src="http://taxis.biconsultingsc.com/img/taxi1.jpg">
                 <p>
                     This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
                     the content is from a card-body consisting of an image and paragraph text. The footer
